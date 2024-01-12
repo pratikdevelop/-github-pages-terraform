@@ -2,8 +2,8 @@ provider "github" {
   token = var.github_token
 }
 
-resource "github_repository" "angular_app" {
-  name        = "angular-app"
+resource "github_repository" "todo" {
+  name        = "todo"
   description = "Angular App deployed with GitHub Pages"
   visibility  = "public"
 }
@@ -48,10 +48,10 @@ jobs:
       run: |
         git config --global user.email "actions@github.com"
         git config --global user.name "GitHub Actions"
-        npx angular-cli-ghpages --dir=dist/angular-app
+        npx angular-cli-ghpages --dir=dist/todo
 EOF
 }
 
 output "github_pages_url" {
-  value = "https://${github_repository.angular_app.full_name}.github.io/"
+  value = "https://${github_repository.todo.full_name}.github.io/"
 }
