@@ -29,6 +29,7 @@
 #     - name: Terraform Show Outputs
 #       run: terraform output
 
+
 name: 'Terraform'
 
 on:
@@ -78,3 +79,5 @@ jobs:
     - name: Terraform Apply
       # if: github.ref == 'refs/heads/"master"' && github.event_name == 'push'
       run: terraform apply -auto-approve -input=false
+      env:
+          TF_VAR_github_token: ${{ secrets.GITHUB_TOKEN }}
