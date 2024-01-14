@@ -1,58 +1,27 @@
-provider "github" {
-  token = var.github_token
-}
-
-resource "github_repository" "todo" {
-  name        = "todo"
-  description = "Angular App deployed with GitHub Pages"
-  visibility  = "public"
-}
-
-resource "github_actions_workflow" "deploy" {
-  name = "Deploy to GitHub Pages"
-
-  on = {
-    push = {}
+terraform {
+  required_providers {
+    github = {
+      source = "integrations/github"
+      version = "5.44.0"
+    }
   }
-
-  resolves = ["Deploy"]
-
-  workflow_content = <<-EOF
-    name: Deploy
-
-    on:
-      push:
-        branches:
-          - main
-
-    jobs:
-      build:
-        runs-on: ubuntu-latest
-
-        steps:
-          - name: Checkout Repository
-            uses: actions/checkout@v2
-
-          - name: Set up Node.js
-            uses: actions/setup-node@v3
-            with:
-              node-version: 14
-
-          - name: Install Dependencies
-            run: npm install
-
-          - name: Build Angular App
-            run: npm run build --prod
-
-          - name: Deploy to GitHub Pages
-            run: |
-              git config --global user.email "actions@github.com"
-              git config --global user.name "GitHub Actions"
-              npx angular-cli-ghpages --dir=dist/angular-app
-  EOF
 }
 
+provider "github" {
+  # Configuration options
+   token = "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"
+   owner="pratikraut88895@gmail.com"
+}
 
-output "github_pages_url" {
-  value = "https://${github_repository.todo.full_name}.github.io/"
+resource "github_repository" "github-pages-terraform" {
+  name        = "github-pages-terraform"
+  description = "My awesome web page"
+  visibility  = "private"
+  auto_init   = true
+  pages {
+    source {
+      branch = "main"
+      path   = "/"
+    }
+  }
 }
